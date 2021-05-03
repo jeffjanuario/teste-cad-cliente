@@ -24,7 +24,7 @@
 	<ui:define name="content">
 		<p:tabView
 			style="width: calc(50% - 4px); border: 2px solid grey;height:calc(99% - 4px);margin:auto;"
-			id="tab-view-cadastro" scrollable="true">
+			id="tab-view-cadastro" scrollable="true" >
 			<p:tab title="Cadastro de Cliente">
 				<h:form id="form-cadastro" prependId="false">
 					<p:growl id="msgs" showDetail="true" />
@@ -32,7 +32,7 @@
 						cellpadding="10">
 						<p:outputLabel for="selectOneRadio-tipoPessoa"
 							value="Tipo Pessoa:" />
-						<p:selectOneRadio id="selectOneRadio-tipoPessoa" 
+						<p:selectOneRadio id="selectOneRadio-tipoPessoa"
 							value="#{pessoaController.tipoPessoaSelected}">
 							<f:selectItems value="#{pessoaController.tiposPessoa}"
 								var="tipoPessoa" itemValue="#{tipoPessoa}"
@@ -107,12 +107,12 @@
 							value="#{pessoaJuridicaController.pessoaJuridicaModel.fantasia}"
 							required="#{pessoaController.pessoaFisica eq false}" />
 
-						<h:outputLabel value="CNPJ:" for="inputMask-cnpj" />
-						<p:inputMask mask="99.999.999/9999-99" id="inputMask-cnpj"
+						<h:outputLabel value="CNPJ" for="inputText-cnpj" />
+						<p:inputMask mask="99.999.999/9999-99" id="inputText-cnpj"
 							value="#{pessoaJuridicaController.pessoaJuridicaModel.cnpj}"
 							required="#{pessoaController.pessoaFisica eq false}" />
 
-						<h:outputLabel value="Telefones:" for="dataTable-telefones" />
+						<h:outputLabel value="Telefones *" for="dataTable-telefones" />
 						<p:column>
 							<p:dataTable id="dataTable-telefones" var="telefone"
 								style="width:180px" scrollable="true" scrollHeight="40"
@@ -120,7 +120,8 @@
 								widgetVar="Telefones" emptyMessage="Registro não encontrado">
 								<p:column style="text-align: left;" width="30%">
 									<f:facet name="header">
-										<p:commandButton process="@this, tab-view-cadastro:dialogTelefone"
+										<p:commandButton
+											process="@this, tab-view-cadastro:dialogTelefone"
 											icon="pi pi-plus" style="border:none;"
 											update="tab-view-cadastro:inputText-telefone-juridico"
 											actionListener="#{pessoaJuridicaController.onShowModal}"
@@ -146,13 +147,13 @@
 						<p:commandButton value="salvar"
 							id="commandButton-salvar-pessoaJuridica" icon="ui-icon-gear"
 							actionListener="#{pessoaJuridicaController.salvar}"
-							update="form-cadastro:msgs, form-cadastro, panelGrid-campos-form-pessoaJuridica" />
+							update="form-cadastro:msgs, panelGrid-campos-form-pessoaJuridica" />
 					</h:panelGrid>
 					<p:dialog header="Telefones" id="dialogTelefone"
 						widgetVar="dlTelefone" minHeight="40" width="350"
 						showEffect="fade" resizable="false">
 						<p:outputPanel id="pnTelefones">
-							<p:outputLabel value="Número:" for="inputText-telefone-juridico" />
+							<p:outputLabel value="Número" for="inputText-telefone-juridico" />
 							<p:inputMask id="inputText-telefone-juridico"
 								value="#{pessoaJuridicaController.telefone}"
 								mask="(99) 99999-9999"

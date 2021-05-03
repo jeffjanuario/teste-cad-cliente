@@ -39,7 +39,7 @@ public class PessoaFisicaController implements Serializable {
 	public void salvar() {
 		pessoaFisicaModel.setUsuarioCadastro(this.usuarioController.GetUsuarioSession());
 		pessoaRepository.salvar(this.pessoaFisicaModel);
-		this.pessoaFisicaModel = null;
+		this.pessoaFisicaModel = new PessoaFisicaModel();
 		Utils.MensagemInfo("Registro cadastrado com sucesso");
 	}
 

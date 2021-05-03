@@ -48,7 +48,7 @@ public class PessoaFisicaRepository implements Serializable {
 		
 		StringBuilder sb = new StringBuilder("SELECT p From PessoaFisica p");
 		if(desc != null) {
-			sb.append(" WHERE p.nome LIKE :desc OR p.cpf LIKE :desc");
+			sb.append(" WHERE LOWER(p.nome) LIKE LOWER(:desc) OR LOWER(p.cpf) LIKE LOWER(:desc)");
 		}
 		Query query = entityManager.createQuery(sb.toString());
 		if(desc != null) {

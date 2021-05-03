@@ -53,7 +53,7 @@ public class PessoaJuridicaRepository implements Serializable {
 
 		StringBuilder sb = new StringBuilder("SELECT distinct p From PessoaJuridica p JOIN FETCH p.telefones");
 		if (desc != null) {
-			sb.append(" WHERE p.razao LIKE :desc OR p.fantasia LIKE :desc OR p.cnpj LIKE :desc ");
+			sb.append(" WHERE LOWER(p.razao) LIKE LOWER(:desc) OR LOWER(p.fantasia) LIKE LOWER(:desc) OR LOWER(p.cnpj) LIKE (:desc) ");
 		}
 		Query query = entityManager.createQuery(sb.toString());
 		if (desc != null) {

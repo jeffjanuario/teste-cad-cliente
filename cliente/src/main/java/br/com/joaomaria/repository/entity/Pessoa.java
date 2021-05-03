@@ -2,7 +2,7 @@ package br.com.joaomaria.repository.entity;
 
 import java.io.Serializable;
 
-import javax.persistence.Column;
+import javax.persistence.Column; 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -16,11 +16,11 @@ import javax.persistence.Table;
 @Table(name = "pessoa")
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
-public abstract class Pessoa implements Serializable {
+public class Pessoa implements Serializable {
 
 	private static final long serialVersionUID = -985546750310447172L;
 	@Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id_pessoa", updatable = false, nullable = false)
 	private Long id;
 

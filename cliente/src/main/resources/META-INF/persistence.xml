@@ -11,6 +11,7 @@
 		<provider>org.hibernate.ejb.HibernatePersistence</provider>
 
 		<class>br.com.joaomaria.repository.entity.Usuario</class>
+		<class>br.com.joaomaria.repository.entity.Pessoa</class>
 		<class>br.com.joaomaria.repository.entity.PessoaFisica</class>
 		<class>br.com.joaomaria.repository.entity.PessoaJuridica</class>
 
