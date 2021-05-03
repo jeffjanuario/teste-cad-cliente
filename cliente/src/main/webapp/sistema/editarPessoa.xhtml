@@ -1,0 +1,162 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<h:outputStylesheet library="css" name="default.css" />
+	<h:outputStylesheet name="primeicons/primeicons.css"
+		library="primefaces" />
+
+
+	<script type="text/javascript" src="/resources/js/locales.js" />
+	<style type="text/css">
+.ui-tabs-nav.ui-widget-header {
+	position: -webkit-sticky;
+	position: sticky;
+	top: 10px;
+	border: 1px solid green;
+}
+</style>
+</h:head>
+
+<h:form id="form-edicao" prependId="false"
+	style="width: calc(80% - 4px); border: 2px solid grey;height:calc(99% - 4px);margin:auto;">
+	<p:growl id="msgs" showDetail="true" />
+	<h:panelGrid columns="2" id="panelGrid-campos-form-pessoa"
+		cellpadding="10">
+		<p:outputLabel for="selectOneRadio-tipoPessoa" value="Tipo Pessoa:" />
+		<p:selectOneRadio id="selectOneRadio-tipoPessoa" disabled="true"
+			value="#{consultarPessoaController.tipoPessoaSelected}">
+			<f:selectItems value="#{consultarPessoaController.tiposPessoa}"
+				var="tipoPessoa" itemValue="#{tipoPessoa}"
+				itemLabel="#{tipoPessoa.descricao}" />
+			<p:ajax event="change" process="@this,selectOneRadio-tipoPessoa"
+				update="@form,panelGrid-campos-form-pessoaFisica, panelGrid-campos-form-pessoaJuridica"
+				listener="#{consultarPessoaController.habilitar()}" />
+		</p:selectOneRadio>
+	</h:panelGrid>
+	<!-- Pessoa Física -->
+	<h:panelGrid id="panelGrid-campos-form-pessoaFisica" columns="2"
+		cellpadding="10"
+		rendered="#{consultarPessoaController.tipoPessoaSelected != null and (consultarPessoaController.pessoaFisica)}">
+		<p:outputLabel value="Nome" for="inputText-nome" />
+		<p:inputText id="inputText-nome" style="width:300px" maxlength="70"
+			value="#{consultarPessoaController.pessoaFisicaModel.nome}"
+			required="#{consultarPessoaController.pessoaFisica}" />
+
+		<h:outputLabel value="CPF:" for="inputText-cpf" />
+		<p:inputMask mask="999.999.999-99" id="inputText-cpf"
+			value="#{consultarPessoaController.pessoaFisicaModel.cpf}"
+			required="#{consultarPessoaController.pessoaFisica}" />
+
+		<p:outputLabel for="calendar-dtNascimento" value="Data de Nascimento" />
+		<p:calendar id="calendar-dtNascimento"
+			value="#{consultarPessoaController.pessoaFisicaModel.dtNascimento}"
+			label="Data de nascimento"
+			required="#{consultarPessoaController.pessoaFisica}" showOn="button"
+			pattern="dd/MM/yyyy" locale="pt_BR" timeZone="America/Sao_Paulo"
+			maxlength="0" readonlyInput="true" navigator="true">
+			<f:convertDateTime locale="pt_BR" timeZone="America/Sao_Paulo" />
+		</p:calendar>
+
+		<p:outputLabel value="Telefone:" for="inputText-telefone" />
+		<p:inputMask id="inputText-telefone"
+			value="#{consultarPessoaController.pessoaFisicaModel.telefone}"
+			mask="(99) 99999-9999"
+			required="#{consultarPessoaController.pessoaFisica}" />
+
+		<p:outputLabel value="E-mail" for="inputText-email" />
+		<p:inputText id="inputText-email" style="width:300px" maxlength="80"
+			value="#{consultarPessoaController.pessoaFisicaModel.email}"
+			required="#{consultarPessoaController.pessoaFisica}"
+			validatorMessage="Email invalido!">
+			<f:validateRegex
+				pattern="[\w\.-]*[a-zA-Z0-9_]@[\w\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\.]*[a-zA-Z]" />
+		</p:inputText>
+		<p:commandButton value="salvar" id="commandButton-salvar-pessoaFisica"
+			icon="ui-icon-gear"
+			actionListener="#{consultarPessoaController.alterar}"
+			update="@form:msgs, form-edicao, panelGrid-campos-form-pessoaFisica, tab-view-consulta:form-consulta"
+			oncomplete="PF('dialog-modal-editar').hide();" />
+	</h:panelGrid>
+
+
+	<!-- Pessoa Jurídica -->
+	<h:panelGrid id="panelGrid-campos-form-pessoaJuridica" columns="2"
+		cellpadding="10"
+		rendered="#{consultarPessoaController.tipoPessoaSelected != null and (consultarPessoaController.pessoaFisica eq false)}">
+
+		<p:outputLabel value="Razão Social" for="inputText-razao" />
+		<p:inputText id="inputText-razao" style="width:300px" maxlength="70"
+			value="#{consultarPessoaController.pessoaJuridicaModel.razao}"
+			required="#{consultarPessoaController.pessoaFisica eq false}" />
+
+		<p:outputLabel value="Fantasia" for="inputText-fantasia" />
+		<p:inputText id="inputText-fantasia" style="width:300px"
+			maxlength="70"
+			value="#{consultarPessoaController.pessoaJuridicaModel.fantasia}"
+			required="#{consultarPessoaController.pessoaFisica eq false}" />
+
+		<h:outputLabel value="CNPJ:" for="inputMask-cnpj" />
+		<p:inputMask mask="99.999.999/9999-99" id="inputMask-cnpj"
+			value="#{consultarPessoaController.pessoaJuridicaModel.cnpj}"
+			required="#{consultarPessoaController.pessoaFisica eq false}" />
+
+		<h:outputLabel value="Telefones:" for="dataTable-telefones" />
+		<p:column>
+			<p:dataTable id="dataTable-telefones" var="telefone"
+				style="width:180px" scrollable="true" scrollHeight="40"
+				value="#{consultarPessoaController.pessoaJuridicaModel.telefones}"
+				widgetVar="Telefones" emptyMessage="Registro não encontrado">
+				<p:column style="text-align: left;" width="30%">
+					<f:facet name="header">
+						<p:commandButton process="@this, dialogTelefone" icon="pi pi-plus"
+							style="border:none;" update="inputText-telefone-juridico"
+							actionListener="#{consultarPessoaController.onShowModal}"
+							onclick="PF('dlTelefone').show()" />
+					</f:facet>
+					<p:commandButton icon="pi pi-times"
+						process="@this, outputText-telefone"
+						update="@form:msgs, dataTable-telefones"
+						action="#{consultarPessoaController.removerTelefone(telefone)}" />
+
+				</p:column>
+				<p:column headerText="Telefones" id="outputText-telefone">
+					<h:outputText value="#{telefone}" style="width:65%">
+						<f:converter converterId="telefoneConverter" />
+					</h:outputText>
+				</p:column>
+			</p:dataTable>
+		</p:column>
+
+		<p:outputLabel value="Site" for="inputText-site" />
+		<p:inputText id="inputText-site" style="width:300px" maxlength="70"
+			value="#{consultarPessoaController.pessoaJuridicaModel.site}"
+			required="#{consultarPessoaController.pessoaFisica eq false}" />
+
+		<p:commandButton value="salvar"
+			id="commandButton-salvar-pessoaJuridica" icon="ui-icon-gear"
+			actionListener="#{consultarPessoaController.alterar}"
+			update="@form:msgs, form-edicao, panelGrid-campos-form-pessoaJuridica, tab-view-consulta:form-consulta"
+			oncomplete="PF('dialog-modal-editar').hide();" />
+	</h:panelGrid>
+	<p:dialog header="Telefones" id="dialogTelefone" widgetVar="dlTelefone"
+		minHeight="40" width="350" showEffect="fade" resizable="false">
+		<p:outputPanel id="pnTelefones">
+			<p:outputLabel value="Número:" for="inputText-telefone-juridico" />
+			<p:inputMask id="inputText-telefone-juridico"
+				value="#{consultarPessoaController.telefone}" mask="(99) 99999-9999"
+				required="#{consultarPessoaController.showModal}" />
+			<p:commandButton icon="pi pi-check" style="width: 5rem"
+				process="pnTelefones"
+				update="@form:msgs, @form:dataTable-telefones, pnTelefones"
+				actionListener="#{consultarPessoaController.addTelefone}" />
+		</p:outputPanel>
+	</p:dialog>
+</h:form>
+</html>

@@ -1,0 +1,87 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+</h:head>
+
+<ui:composition template="/template/layoutBase.xhtml">
+
+	<ui:define name="content">
+
+		<p:dialog header="Editar cadastro de pessoa" id="dialog-modal-editar"
+			widgetVar="dialog-modal-editar" modal="true" height="400px"
+			width="600px">
+			<ui:include src="/sistema/editarPessoa.xhtml" />
+		</p:dialog>
+		<p:tabView
+			style="width: calc(80% - 4px); border: 2px solid grey;height:calc(99% - 4px);margin:auto;"
+			id="tab-view-consulta" scrollable="true">
+			<p:tab title="Clientes">
+				<h:form style="margin:auto;margin-left:2%;" id="form-consulta">
+					<p:outputLabel value="Busca:" for="inputText-busca" />
+					<p:inputMask id="inputText-busca"
+						value="#{consultarPessoaController.desc}"
+						placeholder="Nome, Cpf, Razão, Fantasia,Cnpj"/>
+					<p:commandButton icon="pi pi-search" style="width: 5rem"
+						ajax = "true"
+						update="dataTable-registros"
+						actionListener="#{consultarPessoaController.init()}" />
+					<p:dataTable id="dataTable-registros" var="pessoa"
+						value="#{consultarPessoaController.pessoas}" rows="15"
+						paginator="true"
+						paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+						rowsPerPageTemplate="5,10,15" style="width:98%;">
+
+						<p:column headerText="Código">
+							<h:outputText value="#{pessoa.id}" />
+						</p:column>
+
+						<p:column headerText="Nome">
+							<h:outputText value="#{pessoa.nome}" />
+						</p:column>
+
+						<p:column headerText="Documento">
+							<h:outputText value="#{pessoa.documento}">
+								<f:converter converterId="cnpjConverter" />
+							</h:outputText>
+						</p:column>
+
+						<p:column headerText="Tipo" style="width:200px;">
+							<h:outputText
+								value="#{consultarPessoaController.getDescricaoTipoPessoa(pessoa.flTipoPessoa)}" />
+						</p:column>
+
+						<p:column headerText="" style="width:25px;">
+
+							<p:commandButton icon="ui-icon-pencil" title="Editar Registro"
+								ajax="true"
+								actionListener="#{consultarPessoaController.Editar(pessoa)}"
+								oncomplete="PF('dialog-modal-editar').show();"
+								update="dialog-modal-editar" />
+
+						</p:column>
+
+						<p:column headerText="" style="width:25px;">
+
+							<p:commandButton icon="ui-icon-trash" title="Excluir Registro"
+								ajax="true"
+								actionListener="#{consultarPessoaController.ExcluirPessoa(pessoa)}"
+								update="@form" />
+
+						</p:column>
+
+					</p:dataTable>
+
+				</h:form>
+			</p:tab>
+		</p:tabView>
+	</ui:define>
+
+</ui:composition>
+</html>
