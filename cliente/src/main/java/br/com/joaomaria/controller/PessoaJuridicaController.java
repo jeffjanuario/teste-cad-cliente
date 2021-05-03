@@ -71,9 +71,6 @@ public class PessoaJuridicaController implements Serializable {
 			this.telefoneValido = false;
 			return;
 		}
-		if(this.pessoaJuridicaModel == null) {
-			this.pessoaJuridicaModel = new PessoaJuridicaModel();
-		}
 		if(this.pessoaJuridicaModel.getTelefones() == null) {
 			this.pessoaJuridicaModel.setTelefones(new ArrayList<>());
 		}
@@ -82,6 +79,7 @@ public class PessoaJuridicaController implements Serializable {
 					"Número: " + this.telefone);
 			FacesContext.getCurrentInstance().addMessage(null, msg);
 			this.telefoneValido = false;
+			this.telefone = null;
 			return;
 		}
 		this.pessoaJuridicaModel.getTelefones().add(this.telefone);
@@ -98,9 +96,15 @@ public class PessoaJuridicaController implements Serializable {
 	 * SALVA UM NOVO REGISTRO VIA INPUT
 	 */
 	public void salvar() {
+		if(pessoaJuridicaModel.getTelefones() == null  || pessoaJuridicaModel.getTelefones().isEmpty()) {
+			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,"Necessário ter pelo menos um telefone",
+					"Campo: Telefones ");
+			FacesContext.getCurrentInstance().addMessage(null, msg);
+			return;
+		}
 		pessoaJuridicaModel.setUsuarioCadastro(this.usuarioController.GetUsuarioSession());
 		pessoaJuridicaRepository.salvar(this.pessoaJuridicaModel);
-		this.pessoaJuridicaModel = null;
+		this.pessoaJuridicaModel = new PessoaJuridicaModel();
 		Utils.MensagemInfo("Registro cadastrado com sucesso");
 	}
 

@@ -275,7 +275,7 @@ public class ConsultarPessoaController implements Serializable {
 			return;
 		}
 		if (this.telefone != null && this.pessoaJuridicaModel.getTelefones().contains(this.telefone)) {
-			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Telefone já adicionado",
+			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_WARN, "Telefone já adicionado",
 					"Número: " + this.telefone);
 			FacesContext.getCurrentInstance().addMessage(null, msg);
 			this.telefoneValido = false;
